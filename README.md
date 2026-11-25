@@ -1,5 +1,7 @@
 # QoreSign Receipt Guard
 
+![QoreSign Receipt Guard](docs/cover.png)
+
 **Tamper-evident receipts for freelancers and small shops, signed with secp256k1 + ML-DSA-87 and anchored on QoreChain.**
 
 A receipt or invoice you send today can be forged later: by editing the PDF, or, after Q-Day, by forging an ECDSA signature with a quantum computer. Receipt Guard gives each receipt a fingerprint (SHA-256 of canonical JSON) that is:
