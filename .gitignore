@@ -4,3 +4,4 @@ dist/
 *.wallet.json
 proofs/*.local.json
 .env.local
+proofs/*.offline.json
