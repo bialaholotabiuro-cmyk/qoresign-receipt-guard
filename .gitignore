@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.testnet/
+*.wallet.json
+proofs/*.local.json
+.env.local
