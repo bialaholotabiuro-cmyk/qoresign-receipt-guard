@@ -1,14 +1,17 @@
 {
   "name": "qoresign-receipt-guard",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "A minimal Vite + React + TypeScript QoreChain dApp using @qorechain/sdk to read balances and tokenomics.",
+  "description": "QoreSign Receipt Guard: tamper-evident receipts, hybrid-signed (secp256k1 + ML-DSA-87) with QoreX and anchored on QoreChain testnet.",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "cli": "tsx scripts/cli.ts",
+    "test": "vitest run",
+    "test:live": "QRG_LIVE=1 vitest run tests/live.test.ts"
   },
   "dependencies": {
     "@cosmjs/stargate": "^0.39.0",
@@ -29,5 +32,6 @@
     "typescript": "^5.6.3",
     "vite": "^5.4.0",
     "vitest": "^3.2.7"
-  }
+  },
+  "license": "MIT"
 }
