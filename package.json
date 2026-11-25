@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "cli": "tsx scripts/cli.ts",
     "test": "vitest run",
-    "test:live": "QRG_LIVE=1 vitest run tests/live.test.ts"
+    "test:live": "QRG_LIVE=1 vitest run tests/live.test.ts",
+    "e2e": "node e2e/mock-qorex.e2e.mjs"
   },
   "dependencies": {
     "@cosmjs/stargate": "^0.39.0",
@@ -28,6 +29,7 @@
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.0",
+    "puppeteer-core": "^23.11.1",
     "tsx": "^4.23.15",
     "typescript": "^5.6.3",
     "vite": "^5.4.0",
