@@ -7,6 +7,8 @@
  *   npm run cli -- register              register the ML-DSA-87 key (one time, needs test QOR)
  *   npm run cli -- issue --title "..." [--amount 12.50 --currency fUSD --counterparty qor1... --note "..."]
  *                                        receipt -> hybrid signature -> hybrid-signed anchor tx -> proof card
+ *   npm run cli -- send-proof --memo "<memo>"
+ *                                        hybrid-signed 1 uqor self-send with exactly that memo (wallet proof on build.qorechain.io)
  *   npm run cli -- demo-offline          same flow fully offline (no funds needed): sign + verify locally
  *   npm run cli -- verify <proof.json>   re-check a proof card against the public chain
  *   npm run cli -- inspect <txhash>      read any tx and show its ML-DSA-87 layer / tier
@@ -27,6 +29,7 @@ import {
   loadAccount,
   pqStatus,
   registerPqKey,
+  sendSelfMemo,
   signReceiptMessage,
   TESTNET,
   WALLET_PATH,
@@ -106,6 +109,15 @@ async function main() {
       printReport(await verifyProofCard(card, { rest: TESTNET.rest }));
       return;
     }
+    case "send-proof": {
+      const memo = f.memo;
+      if (!memo || memo === "true") throw new Error('usage: send-proof --memo "<memo>"');
+      const acc = await loadAccount();
+      const a = await sendSelfMemo(acc, memo);
+      console.log(`memo:   ${memo}\ntxHash: ${a.txhash}\nheight: ${a.height} (code ${a.code}, hybrid, sign-bytes ${a.signBytesVersion}, gas ${a.gas})`);
+      console.log(`explorer: ${TESTNET.explorer} (Testnet) -> ${a.txhash}`);
+      return;
+    }
     case "demo-offline": {
       // Full sign/verify/tamper demo without funds: uses the local wallet keys only.
       const acc = await loadAccount();
@@ -141,7 +153,7 @@ async function main() {
       return;
     }
     default:
-      console.log(readFileSync(new URL(import.meta.url), "utf8").split("\n").slice(2, 15).join("\n"));
+      console.log(readFileSync(new URL(import.meta.url), "utf8").split("\n").slice(2, 17).join("\n"));
   }
 }
 

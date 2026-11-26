@@ -43,7 +43,7 @@ Requirements: Node.js 22+, npm.
 
 ```bash
 npm install
-npm test               # 14 offline tests: receipt model, hybrid signatures, hybrid anchor tx
+npm test               # 16 offline tests: receipt model, hybrid signatures, hybrid anchor tx
 npm run test:live      # 3 read-only tests against the public testnet
 npm run dev            # http://localhost:5173
 ```
@@ -68,6 +68,7 @@ npm run cli -- register          # MsgRegisterPQCKeyV2 + proof of possession (cl
 npm run cli -- issue --title "Invoice #2026-014 - logo design" --amount 250.00 --currency fUSD
 npm run cli -- verify proofs/<id>.json
 npm run cli -- inspect <txhash>  # any tx: ML-DSA-87 layer, tier, signer
+npm run cli -- send-proof --memo "<memo>"  # hybrid-signed 1 uqor self-send with exactly this memo (wallet proof)
 npm run cli -- demo-offline      # no funds needed: sign + verify + tamper demo with local keys
 ```
 
@@ -112,6 +113,18 @@ e2e/                 headless UI smoke test with a mock QoreX provider (`npm run
 ## Testnet address
 
 - Demo issuer (CLI, testnet only): `qor1jx6z8y3zh8x0veuhun6lwcwqfx8st7n9us4z43` (`0x91b4239222B9cCF66797e4F5f761c0498F05FA65`)
+
+## Testnet transactions (qorechain-diana)
+
+Explorer: <https://explore.qore.network> (switch to **Testnet**, search the hash).
+
+| What | Tx hash | Height |
+| --- | --- | --- |
+| Faucet funding, 100 QOR | `F36CB6C410D8EBEA5C5E5428FDCA09E84BEDE60C9F76A853EA2AE079669335D8` | n/a |
+| `register`: ML-DSA-87 key registered (classical-signed, once) | `EB5D8AA84813581A7A73F18C40F51F65DA70314C9DD8E23C61D95D7B10DFF694` | 10775313 |
+| `issue`: receipt "QoreSign Receipt Guard demo" anchored, hybrid-signed (tier `pqc`, sign-bytes v2) | `19768305C8FF8BE88909824D1F8E0E6241A6F772536D30758C76494D3137AC20` | 10775316 |
+
+The anchored receipt's proof card is [`proofs/bd9c90e0e735469a.json`](proofs/bd9c90e0e735469a.json); `npm run cli -- verify proofs/bd9c90e0e735469a.json` passes all 7 checks against the public chain.
 
 ## License
 

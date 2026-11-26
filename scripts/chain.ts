@@ -160,6 +160,12 @@ export async function registerPqKey(acc: UnifiedAccount) {
 
 /** Hybrid-signed (secp256k1 + ML-DSA-87) 1-uqor self-send whose memo is `qrg1:<fingerprint>`. */
 export async function anchorFingerprint(acc: UnifiedAccount, fingerprint: string) {
+  return sendSelfMemo(acc, anchorMemo(fingerprint));
+}
+
+/** Hybrid-signed 1-uqor self-send carrying an arbitrary memo (e.g. the proof-of-ownership memo from build.qorechain.io). */
+export async function sendSelfMemo(acc: UnifiedAccount, memo: string) {
+  if (!memo.trim()) throw new Error("memo must not be empty");
   const info = await accountInfo(acc.cosmos);
   if (!info.exists) throw new Error("account not on chain yet: fund it from the testnet faucet first");
   const signer = new EthNativeSigner(acc, { signMode: "hybrid", rest: TESTNET.rest });
@@ -170,7 +176,6 @@ export async function anchorFingerprint(acc: UnifiedAccount, fingerprint: string
       value: MsgSend.fromPartial({ fromAddress: acc.cosmos, toAddress: acc.cosmos, amount: [{ denom: "uqor", amount: "1" }] }),
     },
   ];
-  const memo = anchorMemo(fingerprint);
   const { txBytes, gas } = await signSimulated(signer, (fee) =>
     signer.sign({ chainId: TESTNET.chainId, accountNumber: info.accountNumber, sequence: info.sequence, messages, fee, memo, signBytesVersion: version }).txRawBytes,
   );
