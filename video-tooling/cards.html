@@ -3,13 +3,13 @@ html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:radial-
 .card{display:none;box-sizing:border-box;width:1920px;height:1080px;padding:110px 150px}
 .k{letter-spacing:.3em;color:#a78bfa;font-weight:700;font-size:30px;text-transform:uppercase}
 h1{font-size:72px;margin:18px 0 40px;line-height:1.05}
-.flow{display:flex;align-items:stretch;gap:26px;margin-top:30px}
+.flow{display:flex;align-items:stretch;gap:26px;margin-top:70px}
 .box{flex:1;border:2px solid #3b3f6b;border-radius:22px;padding:28px 26px;background:#111733}
-.box b{display:block;font-size:34px;margin-bottom:12px;color:#c4b5fd}
-.box span{font-size:26px;color:#b8c0d8;line-height:1.4}
+.box b{display:block;font-size:40px;margin-bottom:12px;color:#c4b5fd}
+.box span{font-size:31px;color:#b8c0d8;line-height:1.4}
 .arrow{align-self:center;font-size:56px;color:#7c6cf2}
 .mono{font-family:"DejaVu Sans Mono",monospace;font-size:24px;color:#a5b4fc}
-ul{font-size:38px;line-height:1.5;padding-left:44px;margin:0} li{margin:14px 0} li::marker{color:#22c55e}
+ul{font-size:46px;line-height:1.45;padding-left:44px;margin:0} li{margin:14px 0} li::marker{color:#22c55e}
 .ok{color:#22c55e;font-weight:700}
 .foot{position:absolute;bottom:70px;left:150px;font-size:26px;color:#8b93b0}
 .pill{display:inline-block;border:2px solid #6d5ce8;border-radius:999px;padding:10px 26px;margin:0 14px 14px 0;font-size:32px}
@@ -17,20 +17,20 @@ ul{font-size:38px;line-height:1.5;padding-left:44px;margin:0} li{margin:14px 0} 
 <div class="card" id="arch">
   <div class="k">How it works</div><h1>One receipt, two signatures, one anchor</h1>
   <div class="flow">
-    <div class="box"><b>1 · Receipt</b><span>Canonical JSON in the browser → SHA-256 fingerprint</span></div><div class="arrow">→</div>
-    <div class="box"><b>2 · Hybrid signature</b><span>Wallet signs the fingerprint text: secp256k1 + ML-DSA-87 (4,627-byte PQ half)</span></div><div class="arrow">→</div>
-    <div class="box"><b>3 · Anchor tx</b><span>Hybrid-signed 1 uqor self-send, memo <span class="mono">qrg1:&lt;sha256&gt;</span> on qorechain-diana</span></div><div class="arrow">→</div>
-    <div class="box"><b>4 · Verifier</b><span>Server side, @qorechain/qoresign: signature vs on-chain key, tx read-back</span></div>
+    <div class="box" data-step="1"><b>1 · Receipt</b><span>Canonical JSON in the browser → SHA-256 fingerprint</span></div><div class="arrow" data-step="2">→</div>
+    <div class="box" data-step="2"><b>2 · Hybrid signature</b><span>Wallet signs the fingerprint text: secp256k1 + ML-DSA-87 (4,627-byte PQ half)</span></div><div class="arrow" data-step="3">→</div>
+    <div class="box" data-step="3"><b>3 · Anchor tx</b><span>Hybrid-signed 1 uqor self-send, memo <span class="mono">qrg1:&lt;sha256&gt;</span> on qorechain-diana</span></div><div class="arrow" data-step="4">→</div>
+    <div class="box" data-step="4"><b>4 · Verifier</b><span>Server side, @qorechain/qoresign: signature vs on-chain key, tx read-back</span></div>
   </div>
-  <p style="font-size:30px;color:#b8c0d8;margin-top:60px">Proof card = receipt + hybrid signature + anchor tx hash. Anyone can re-check it against the public chain.</p>
+  <p data-step="4" style="font-size:36px;color:#b8c0d8;margin-top:70px">Proof card = receipt + hybrid signature + anchor tx hash. Anyone can re-check it against the public chain.</p>
 </div>
 <div class="card" id="pq">
   <div class="k">Post-quantum correctness</div><h1>What the verifier insists on</h1>
   <ul>
-    <li>ML-DSA-87 half checked against the key <b>registered on chain</b>, never a key sent by the page</li>
-    <li>Stripped PQ half (downgrade) or wrong ML-DSA-87 key → <b>rejected</b> (unit tests)</li>
-    <li>Any edit to the receipt → fingerprint, signature and memo checks <b>fail</b></li>
-    <li>Anchor tx must be committed, signed by the issuer, tier <span class="mono" style="font-size:34px">pqc</span> with a <b>verified</b> ML-DSA-87 layer</li>
+    <li data-step="1">ML-DSA-87 half checked against the key <b>registered on chain</b>, never a key sent by the page</li>
+    <li data-step="2">Stripped PQ half (downgrade) or wrong ML-DSA-87 key → <b>rejected</b> (unit tests)</li>
+    <li data-step="3">Any edit to the receipt → fingerprint, signature and memo checks <b>fail</b></li>
+    <li data-step="4">Anchor tx must be committed, signed by the issuer, tier <span class="mono" style="font-size:42px">pqc</span> with a <b>verified</b> ML-DSA-87 layer</li>
   </ul>
 </div>
 <div class="card" id="outro">
@@ -41,5 +41,7 @@ ul{font-size:38px;line-height:1.5;padding-left:44px;margin:0} li{margin:14px 0} 
   <p class="mono" style="font-size:22px;color:#8b93b0;margin-top:40px">Testnet txs shown: TXLIST</p>
 </div>
 <script>const id=location.hash.slice(1);document.getElementById(id).style.display="block";
-const t=new URLSearchParams(location.search).get("tx");if(t)document.body.innerHTML=document.body.innerHTML.replace("TXLIST",t);document.getElementById(id).style.display="block";</script>
+const t=new URLSearchParams(location.search).get("tx");if(t)document.body.innerHTML=document.body.innerHTML.replace("TXLIST",t);document.getElementById(id).style.display="block";const step=new URLSearchParams(location.search).get("step");
+if(step!==null)document.querySelectorAll("[data-step]").forEach(e=>{if(+e.dataset.step>+step)e.style.visibility="hidden"});
+</script>
 </body></html>

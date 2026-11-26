@@ -1,11 +1,95 @@
 [
- {"id":"title","src":"cover","text":"Receipts and invoices get forged. After Q-Day, ECDSA signatures can be forged too. QoreSign Receipt Guard signs every receipt with secp256k1 and ML-DSA-87, and anchors it on the QoreChain testnet."},
- {"id":"arch","src":"card-arch","text":"The browser builds a canonical receipt and its SHA-256 fingerprint. The wallet makes a hybrid signature over it. A hybrid-signed transaction puts the fingerprint on chain in its memo. A server-side verifier, built on QoreSign, checks it all against the public chain."},
- {"id":"web1","src":"web:start-1.5:report+6.5","label":true,"text":"This is the web app on testnet. For this recording the QoreX wallet is mocked: a local test key signs through the QoreChain SDK, but the transaction is real. We fill in an invoice for 250 fUSD and sign. The signature is hybrid, with a 4,627-byte ML-DSA-87 part. Then a hybrid-signed transaction anchors the fingerprint. The verifier passes all seven checks, including the key registered on chain and a verified ML-DSA-87 layer."},
- {"id":"web2","src":"web:downloaded-0.5:end","label":true,"text":"Anyone can check a proof card. Here the amount is changed from 250 to 2,500. Verified again, the fingerprint, signature and memo checks fail."},
- {"id":"term1","src":"term:t-start:t-issue-done+5","text":"The same flow runs from the command line, using the SDK's hybrid EthNativeSigner. This account's ML-DSA-87 key is registered on chain. A fresh issue signs, anchors and verifies a new receipt, and all seven checks pass."},
- {"id":"term2","src":"term:t-rest:t-tests","text":"No app is needed to check it. The public REST API returns the transaction with our memo, and a pqc hybrid verify event with status verified."},
- {"id":"term3","src":"term:t-tests:t-end","text":"Sixteen offline tests cover edited receipts, a forged issuer, a wrong ML-DSA key, and a stripped post-quantum half: the downgrade case. Three read-only live tests run against testnet on demand."},
- {"id":"pq","src":"card-pq","text":"So the verifier checks the ML-DSA half against the key registered on chain, never a key sent by the page. It rejects downgrades and edits, and it requires a committed anchor, signed by the issuer, with a verified ML-DSA-87 layer."},
- {"id":"outro","src":"card-outro","text":"Built with create-qorechain-dapp, the QoreChain SDK, QoreSign, and the QoreX wallet interface. MIT licensed, testnet only. Build Before Q-Day."}
+ {
+  "id": "title",
+  "kind": "still",
+  "src": "cover",
+  "sentences": [
+   "Receipts and invoices get forged. After Q-Day, ECDSA signatures can be forged too.",
+   "QoreSign Receipt Guard signs each receipt with secp256k1 and ML-DSA-87, and anchors it on QoreChain."
+  ]
+ },
+ {
+  "id": "arch",
+  "kind": "steps",
+  "src": "arch",
+  "sentences": [
+   "The browser builds a canonical receipt and its SHA-256 fingerprint.",
+   "The wallet signs it twice: a classical signature and a post-quantum one.",
+   "A hybrid-signed transaction puts the fingerprint on chain, in the memo.",
+   "A verifier built on QoreSign then checks everything against the public chain."
+  ]
+ },
+ {
+  "id": "web1",
+  "kind": "video",
+  "src": "web:start-1.5:report+6.5",
+  "label": true,
+  "sentences": [
+   "This is the web app on testnet. For this recording the QoreX wallet is mocked: a local test key signs through the QoreChain SDK, but the transaction is real.",
+   "We fill in an invoice for 250 fUSD and sign. The signature is hybrid, with a 4,627-byte ML-DSA-87 part.",
+   "Then a hybrid-signed transaction anchors the fingerprint.",
+   "The verifier passes all seven checks, including the key registered on chain and a verified ML-DSA-87 layer."
+  ]
+ },
+ {
+  "id": "web2",
+  "kind": "video",
+  "src": "web:downloaded-0.5:end",
+  "label": true,
+  "sentences": [
+   "Anyone can check a proof card. Here the amount is changed from 250 to 2,500.",
+   "Verified again, the fingerprint, signature and memo checks fail."
+  ]
+ },
+ {
+  "id": "term1",
+  "kind": "video",
+  "src": "term:t-start:t-issue-done+5",
+  "sentences": [
+   "The same flow runs from the command line, using the SDK's hybrid EthNativeSigner.",
+   "This account's ML-DSA-87 key is registered on chain.",
+   {
+    "text": "A fresh issue signs, anchors and verifies a new receipt, and all seven checks pass.",
+    "at": "t-issue-done-0.5"
+   }
+  ]
+ },
+ {
+  "id": "term2",
+  "kind": "video",
+  "src": "term:t-rest:t-tests-3",
+  "sentences": [
+   "No app is needed to check it.",
+   "The public REST API returns the transaction with our memo, and a pqc_hybrid_verify event with status verified."
+  ]
+ },
+ {
+  "id": "term3",
+  "kind": "video",
+  "src": "term:t-tests:t-tests-done+4",
+  "sentences": [
+   "Sixteen offline tests cover edited receipts, a forged issuer, a wrong ML-DSA key, and a stripped post-quantum half: the downgrade case.",
+   "Three read-only live tests run against testnet on demand."
+  ]
+ },
+ {
+  "id": "pq",
+  "kind": "steps",
+  "src": "pq",
+  "sentences": [
+   "The ML-DSA-87 half is checked against the key registered on chain, never a key sent by the page.",
+   "Stripped post-quantum signatures and a wrong key are rejected, covered by unit tests.",
+   "Any edit to the receipt fails the fingerprint, signature and memo checks.",
+   "And the anchor must be a committed transaction, signed by the issuer, with a verified ML-DSA-87 layer."
+  ]
+ },
+ {
+  "id": "outro",
+  "kind": "still",
+  "src": "card-outro",
+  "sentences": [
+   "Built with create-qorechain-dapp, the QoreChain SDK, QoreSign, and the QoreX wallet interface.",
+   "MIT licensed, testnet only. Build Before Q-Day."
+  ]
+ }
 ]

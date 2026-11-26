@@ -81,7 +81,10 @@ async function main() {
       console.log(`network:  ${TESTNET.chainId} (${TESTNET.rest})`);
       console.log(`account:  ${acc.cosmos}  (${acc.evm})`);
       console.log(`on chain: ${info.exists ? `yes, account #${info.accountNumber}, sequence ${info.sequence}` : "no (fund from faucet)"}`);
-      console.log(`balances: ${bal.length ? bal.map((b) => `${b.amount} ${b.denom}`).join(", ") : "(none)"}`);
+      // uqor first; other denoms (faucet erc20 tokens) are summarised unless --all is given
+      const shown = f.all === "true" ? bal : bal.filter((b) => b.denom === "uqor");
+      const hidden = bal.length - shown.length;
+      console.log(`balances: ${shown.length ? shown.map((b) => `${b.amount} ${b.denom}`).join(", ") : "(none)"}${hidden > 0 ? `  (+${hidden} other tokens, use --all)` : ""}`);
       console.log(`PQC key:  ${pq.registered ? `registered (${pq.keyType}, possession proven: ${pq.possessionProven})` : "not registered (run: npm run cli -- register)"}`);
       return;
     }
