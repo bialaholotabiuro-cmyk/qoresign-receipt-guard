@@ -24,6 +24,17 @@ def dur(p): return float(subprocess.check_output(["ffprobe", "-v", "error", "-sh
 RATE = 22050
 
 def synth(text, path):
+    # Prefer a Whisper-checked take from select_voice.py when one exists.
+    accepted = os.path.join(W, "accepted-vo", os.path.basename(path))
+    src = accepted if os.path.exists(accepted) else None
+    if src:
+        with wave.open(src) as w:
+            assert w.getframerate() == RATE and w.getnchannels() == 1 and w.getsampwidth() == 2
+            x = np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(np.float32) / 32768
+        with wave.open(path, "wb") as o:
+            o.setnchannels(1); o.setsampwidth(2); o.setframerate(RATE)
+            o.writeframes((np.clip(x, -1, 1) * 32767).astype(np.int16).tobytes())
+        return x
     subprocess.run([PIPER, "-m", VOICE, "--no-normalize", "--length-scale", LS, "-f", path], input=say(text).encode(), check=True, capture_output=True)
     with wave.open(path) as w:
         assert w.getframerate() == RATE and w.getnchannels() == 1 and w.getsampwidth() == 2, "unexpected piper format"
@@ -83,9 +94,12 @@ for i, s in enumerate(segs):
         frames = [(img, D)]
     else:
         starts = [0.0] + [q["at"] for q in s["sents"]]
+        # Extra sentences stay on the last prepared reveal frame (PQ card has 4 bullets, 5 sentences).
+        max_step = max(int(fn[len(f"card-{s['src']}-s"):-4]) for fn in os.listdir(W) if fn.startswith(f"card-{s['src']}-s") and fn.endswith(".png")) if any(fn.startswith(f"card-{s['src']}-s") for fn in os.listdir(W)) else 0
         for k in range(len(starts)):
             end = starts[k + 1] if k + 1 < len(starts) else D
-            frames.append((os.path.join(W, f"card-{s['src']}-s{k}.png"), end - starts[k]))
+            step = min(k, max_step)
+            frames.append((os.path.join(W, f"card-{s['src']}-s{step}.png"), end - starts[k]))
     lst = os.path.join(W, f"frames-{s['id']}.txt")
     with open(lst, "w") as f:
         for p, d in frames: f.write(f"file '{p}'\nduration {d:.3f}\n")

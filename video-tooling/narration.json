@@ -80,7 +80,8 @@
    "The ML-DSA-87 half is checked against the key registered on chain, never a key sent by the page.",
    "Stripped post-quantum signatures and a wrong key are rejected, covered by unit tests.",
    "Any edit to the receipt fails the fingerprint, signature and memo checks.",
-   "And the anchor must be a committed transaction, signed by the issuer, with a verified ML-DSA-87 layer."
+   "The anchor must be a committed transaction, signed by the issuer.",
+   "It also needs a verified ML-DSA-87 layer."
   ]
  },
  {

@@ -116,7 +116,7 @@ e2e/                 headless UI smoke test with a mock QoreX provider (`npm run
 
 ## Demo video
 
-2:40, 1080p, English voice-over (loudness-normalised) with subtitles: **[qoresign-demo.mp4 (v0.1.0 release)](https://github.com/bialaholotabiuro-cmyk/qoresign-receipt-guard/releases/download/v0.1.0/qoresign-demo.mp4)** (copy in [`docs/demo/`](docs/demo/qoresign-demo.mp4)).
+2:42, 1080p, English voice-over (loudness-normalised) with subtitles: **[qoresign-demo.mp4 (v0.1.0 release)](https://github.com/bialaholotabiuro-cmyk/qoresign-receipt-guard/releases/download/v0.1.0/qoresign-demo.mp4)** (copy in [`docs/demo/`](docs/demo/qoresign-demo.mp4)).
 
 All footage is real: the web app flow, a fresh CLI `issue` + verification, a REST read-back of the anchor tx and `npm test`. In the web part the QoreX extension is **mocked for the recording** (a local testnet key signs through the QoreChain SDK, labelled on screen); the anchor transactions are real testnet txs, listed below. Tooling: [`video-tooling/`](video-tooling/).
 
