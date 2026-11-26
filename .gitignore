@@ -6,3 +6,6 @@ proofs/*.local.json
 .env.local
 proofs/*.offline.json
 e2e/*.png
+
+__pycache__/
+*.pyc
